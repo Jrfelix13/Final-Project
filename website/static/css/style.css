@@ -15,11 +15,13 @@
     background-repeat: no-repeat;
     background-size: cover;
     opacity: 0.9;
-    font-family: Helvetica;
 }
 
-.h1 {
-    font-weight: bold;
-    color: #fff;
-    font-size: 32px;
+.navbar-nav.mr-auto {
+    color: black;
+}
+
+body {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
 }
