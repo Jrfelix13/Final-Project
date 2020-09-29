@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Instacart Market</title>
+
+    <!-- Bring in our bootstrap stylesheet -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm fixed-top navbar-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="story.html">Story</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="indicadores">Shop</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Creates the Overall Grid -->
+    <!-- Creates Main stage -->
+    <div class="row">
+        <img style="background-size: cover; background-position: center;" src="https://github.com/Jrfelix13/Final-Project/blob/master/gr%C3%A1ficos-sitio/SAM.PNG?raw=true" width="1500" height="500" alt="SAM">
+    </div>
+    <br>
+    <br>
+    <!-- Second Stage -->
+    <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="50" data-aos-duration="1000" class="container1">
+        <div class="row">
+            <!-- First of two columns -->
+            <div class="col-md-6">
+                <h1 style="color: black; font-weight: bold; margin-left: 80px; margin-right: 10px;">The Problem
+                </h1>
+                <h4 style="color: black; font-weight: bold; margin-left: 80px; margin-right: 10px;">is worth $25,000 USD
+                </h4>
+                <br>
+                <h5 style="color: black; font-weight: lighter; margin-left: 90px; margin-right: 10px;">“Whether you shop from meticulously planned grocery lists or let whimsy guide your grazing, our unique food rituals define who we are. Instacart, a grocery ordering and delivery app, aims to make it easy to fill your refrigerator and pantry
+                    with your personal favorites"
+                </h5>
+                <br>
+                <h5 style="color: black; font-weight: lighter; margin-left: 90px; margin-right: 10px;">Instacart is challenging the Kaggle community to use this anonymized data on customer orders over time to predict which previously purchased products will be in a user’s next order.
+                </h5>
+            </div>
+            <!-- Second of two columns -->
+            <div class="col-md-6">
+                <img style="margin-left: 120px;" src="https://github.com/Jrfelix13/Final-Project/blob/master/gr%C3%A1ficos-sitio/problem.PNG?raw=true" width="400" height="400" alt="Problem">
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+    <hr style="margin-left: 100 px; margin-right: 100 px;">
+    <!-- Third Stage -->
+    <br>
+    <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="50" data-aos-duration="1000" class="container1">
+        <h1 style="color: black; font-weight: bold; margin-left: 80px; margin-right: 10px; text-align: center;">Infrastructure Walkthrough
+        </h1>
+        <br>
+        <br>
+        <div class="row">
+            <!-- First of four columns -->
+            <div class="col-md-3">
+                <h4 style="color: grey; font-weight: bold; text-align: center;"> Dataset provided
+                </h4>
+                <br>
+                <ul style="color:grey; text-align: center; list-style-type:none;">
+                    <li>7 CSV files</li>
+                    <li>196.24 MB</li>
+                    <li>3 million grocery orders</li>
+                    <li>200,000 Instacart users</li>
+                </ul>
+                <br>
+            </div>
+            <!-- Second of four columns -->
+            <div class="col-md-3">
+                <h4 style="color: grey; font-weight: bold; text-align: center;">Hosting and RDB
+                </h4>
+                <br>
+                <ul style="color:grey; text-align: center; list-style-type:none;">
+                    <li>Amazon AWS</li>
+                    <li>PostgreSQL</li>
+                    <br>
+                    <li>1.Orders</li>
+                    <li>2.order_products_prior</li>
+                    <li>3.order_products_train</li>
+                    <li>4.products</li>
+                    <li>5.aisles</li>
+                    <li>6.departments</li>
+                </ul>
+                <br>
+            </div>
+            <!-- Third of four columns -->
+            <div class="col-md-3">
+                <h4 style="color: grey; font-weight: bold; text-align: center;">Machine Learning
+                </h4>
+                <br>
+                <ul style="color:grey; text-align: center; list-style-type:none;">
+                    <li>Google Colaboratory</li>
+                    <li>Python Pandas</li>
+                    <li>Tensorflow (Keras)</li>
+                    <li>Sklearn</li>
+                    <br>
+                    <li>Model: Sequential Supervised learning</li>
+                </ul>
+                <br>
+            </div>
+            <!-- Fourth of four columns -->
+            <div class="col-md-3">
+                <h4 style="color: grey; font-weight: bold; text-align: center;">Deployment and Visualization
+                </h4>
+                <br>
+                <ul style="color:grey; text-align: center; list-style-type:none;">
+                    <li>HTML/CSS/Bootstrap</li>
+                    <li>JavaScript D3 and Plotly</li>
+                    <li>Flask</li>
+                </ul>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="row" style="background-color: rgb(11, 14, 35);">
+        <footer class="container" style="background-color: rgb(11, 14, 35);">
+            <img style="margin-bottom: 10px; float: right;" src="https://github.com/Jrfelix13/Final-Project/blob/master/gr%C3%A1ficos-sitio/firma.PNG?raw=true" width="300" height="100" alt="TAJ">
+        </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.7/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="static/js/app2.js"></script>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+</body>
+
+</html>
