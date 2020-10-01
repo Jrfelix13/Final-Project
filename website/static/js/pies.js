@@ -1,4 +1,4 @@
-const url = "https://raw.githubusercontent.com/Jrfelix13/Final-Project/master/data-sitio/department.json";
+const url = "https://raw.githubusercontent.com/Jrfelix13/Final-Project/master/Data_sitio/department.json";
 
 // Fetch the JSON data and console log it
 
@@ -8,7 +8,7 @@ d3.json(url).then(function(json) {
     var total_count = [];
     json.forEach(function(data) {
         departments.push(data.department);
-        total_count.push(data.Total_Count_by_departments);
+        total_count.push(data.Total_departments);
     });
     console.log(departments)
 
@@ -23,7 +23,8 @@ d3.json(url).then(function(json) {
 
         var layout = {
             height: 500,
-            width: 700
+            width: 700,
+            title: "Top 10 departments (orders by department)"
         };
 
         Plotly.newPlot("pie1", data, layout);
