@@ -1,8 +1,20 @@
 const url = "https://raw.githubusercontent.com/Jrfelix13/Final-Project/master/Data_sitio/department.json";
+const url2 ="https://raw.githubusercontent.com/Jrfelix13/Final-Project/master/Data_sitio/products.json"
 
 // Fetch the JSON data and console log it
 
-d3.json(url).then(function(json) {
+var x = url; 
+
+d3.selectAll("#selDep").on("click", getData);
+
+
+function getData() {
+   x=url2; 
+   return x; 
+}
+console.log(x)
+// Display the default plot
+d3.json(x).then(function(json) {
     console.log(json);
     var departments = [];
     var total_count = [];
@@ -31,5 +43,8 @@ d3.json(url).then(function(json) {
     }
     init();
 });
+
+
+
 
 // Create an array of music provider labels
