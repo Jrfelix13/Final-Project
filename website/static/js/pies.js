@@ -53,10 +53,17 @@ function init() {
 d3.selectAll("#selDep").on("click",getData);
 
 function getData() {
-
+ var deps_text = new Array();
+    deps_text.push(`DEPART`);
+    d3.select("#chart-text").html("");
     d3.select("#chart-text")
+            .selectAll("h3")
+            .data(deps_text)
+            .enter()
             .append("h3")
-            .data("orders by deparment")
+            .text((function(d) { return d }))
+            .classed("item", true)
+            .attr("id", "text_chart")
 
    var labels = departments;
 
@@ -81,10 +88,17 @@ function getData() {
 d3.selectAll("#selPro").on("click",getData2);
 
 function getData2() {
-
-   d3.select("#chart-text")
+  var deps_text = new Array();
+    deps_text.push(`AI`);
+    d3.select("#chart-text").html("");
+    d3.select("#chart-text")
+            .selectAll("h3")
+            .data(deps_text)
+            .enter()
             .append("h3")
-            .data("orders by aisle")
+            .text((function(d) { return d }))
+            .classed("item", true)
+            .attr("id", "text_chart")
 
    var labels = aisle2;
 
