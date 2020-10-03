@@ -104,14 +104,5 @@ svg.append("text")
         .attr("y", -50)
         .attr("text-anchor", "left")
         .style("font-size", "22px")
-        .text("A d3.js heatmap");
+        .text("Day of the week vs Hours vs Total of orderes");
 
-// Add subtitle to graph
-svg.append("text")
-        .attr("x", 0)
-        .attr("y", -20)
-        .attr("text-anchor", "left")
-        .style("font-size", "14px")
-        .style("fill", "grey")
-        .style("max-width", 400)
-        .text("A short description of the take-away message of this chart.");
