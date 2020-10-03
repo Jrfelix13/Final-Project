@@ -33,10 +33,10 @@ console.log(aisle2)
     
 
 function init() {
-        var labels = departments;
+        
         var data = [{
             values: total_dep,
-            labels: labels,
+            labels: departments,
             type: "pie"
         }];
 
@@ -119,7 +119,6 @@ function getData2() {
     }
     init3();
 };
-
 init();
 
 // Create an array of music provider labels
