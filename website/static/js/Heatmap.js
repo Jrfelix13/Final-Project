@@ -1,9 +1,9 @@
-const heat ="https://raw.githubusercontent.com/Jrfelix13/Final-Project/master/Data_sitio/dayhour.json"
+const heat ="https://raw.githubusercontent.com/Jrfelix13/Final-Project/master/Data_sitio/dayhour1.json"
 
 // set the dimensions and margins of the graph
-var margin = {top: 80, right: 25, bottom: 30, left: 40},
-  width = 450 - margin.left - margin.right,
-  height = 450 - margin.top - margin.bottom;
+var margin = {top: 80, right: 25, bottom: 30, left: 90},
+  width = 600 - margin.left - margin.right,
+  height = 300 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz")
@@ -15,11 +15,10 @@ var svg = d3.select("#my_dataviz")
 
 //Read the data
 d3.json(heat).then(function(data) {
-  
   // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
-  var myGroups = d3.map(data, function(d){return d.order_dow;}).keys()
-  var myVars = d3.map(data, function(d){return d.order_hour_of_day;}).keys()
-  console.log(d.order_dow)
+  var myGroups = d3.map(data, function(d){return d.order_hour_of_day;}).keys()
+  var myVars = d3.map(data, function(d){return d.order_dow;}).keys()
+  console.log(myGroups)
   // Build X scales and axis:
   var x = d3.scaleBand()
     .range([ 0, width ])
@@ -44,7 +43,7 @@ d3.json(heat).then(function(data) {
   // Build color scale
   var myColor = d3.scaleSequential()
     .interpolator(d3.interpolateInferno)
-    .domain([1,100])
+    .domain([5826,568964])
 
   // create a tooltip
   var tooltip = d3.select("#my_dataviz")
@@ -67,7 +66,7 @@ d3.json(heat).then(function(data) {
   }
   var mousemove = function(d) {
     tooltip
-      .html("The exact value of<br>this cell is: " + d.value)
+      .html("The exact value of<br>this cell is: " + d.order_id)
       .style("left", (d3.mouse(this)[0]+70) + "px")
       .style("top", (d3.mouse(this)[1]) + "px")
   }
@@ -84,13 +83,13 @@ d3.json(heat).then(function(data) {
     .data(data, function(d) {return d.group+':'+d.variable;})
     .enter()
     .append("rect")
-      .attr("x", function(d) { return x(d.group) })
-      .attr("y", function(d) { return y(d.variable) })
+      .attr("x", function(d) { return x(d.order_hour_of_day) })
+      .attr("y", function(d) { return y(d.order_dow) })
       .attr("rx", 4)
       .attr("ry", 4)
       .attr("width", x.bandwidth() )
       .attr("height", y.bandwidth() )
-      .style("fill", function(d) { return myColor(d.value)} )
+      .style("fill", function(d) { return myColor(d.order_id)} )
       .style("stroke-width", 4)
       .style("stroke", "none")
       .style("opacity", 0.8)
