@@ -1,3 +1,5 @@
+const heat ="https://raw.githubusercontent.com/Jrfelix13/Final-Project/master/Data_sitio/dayhour.json"
+
 // set the dimensions and margins of the graph
 var margin = {top: 80, right: 25, bottom: 30, left: 40},
   width = 450 - margin.left - margin.right,
@@ -9,16 +11,15 @@ var svg = d3.select("#my_dataviz")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
 .append("g")
-  .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+  .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/heatmap_data.csv", function(data) {
-
+d3.json(heat).then(function(data) {
+  
   // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
-  var myGroups = d3.map(data, function(d){return d.group;}).keys()
-  var myVars = d3.map(data, function(d){return d.variable;}).keys()
-
+  var myGroups = d3.map(data, function(d){return d.order_dow;}).keys()
+  var myVars = d3.map(data, function(d){return d.order_hour_of_day;}).keys()
+  console.log(d.order_dow)
   // Build X scales and axis:
   var x = d3.scaleBand()
     .range([ 0, width ])
