@@ -17,6 +17,14 @@
     opacity: 0.9;
 }
 
+.container3 {
+    background-image: url("https://github.com/Jrfelix13/Final-Project/blob/master/gr%C3%A1ficos-sitio/taj_portada.jpg?raw=true");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.9;
+}
+
 .navbar-nav.mr-auto {
     color: black;
 }
