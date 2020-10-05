@@ -13,7 +13,6 @@ from sqlalchemy.orm import aliased
 
 import pyspark
 from pyspark.sql import SparkSession
-spark = SparkSession.builder.appName("FinalProject").getOrCreate()
 from pyspark.ml.fpm import FPGrowth
 #################################################
 # Database Setup
@@ -40,12 +39,14 @@ Department = Base.classes.department_tbl
 Orders = Base.classes.orders_tbl
 OrdersP = Base.classes.orders_product_prior
 OrdersT = Base.classes.orders_product_train
+ProductL= Base.classes.product_list
 
 #################################################
 # Flask Setup
 #################################################
 app = Flask(__name__)
 
+spark = SparkSession.builder.appName("FinalProject").getOrCreate()
 
 #################################################
 # Flask Routes
@@ -84,7 +85,7 @@ def neworder(item1,item2=None,item3=None):
         item_2 = session.query(Product.product_id).filter(Product.product_name == item2).all()
         order_items.append(item_2)
     if item3 != None:
-        item_2 = session.query(Product.product_id).filter(Product.product_name == item3).all()
+        item_3 = session.query(Product.product_id).filter(Product.product_name == item3).all()
         order_items.append(item_3)
     
     order_item=[]
@@ -95,7 +96,7 @@ def neworder(item1,item2=None,item3=None):
     order_items_df=pd.DataFrame(order_item,columns=['OrderId','ProductID'])
     order_items = spark.createDataFrame(order_items_df)
 
-    results = session.query(OrdersT.order_id,OrdersT.order_id).all()
+    results = session.query(OrdersT.order_id,OrdersT.product_id).all()
     order_id = []
     product_id = []
     for result in results:
@@ -170,7 +171,7 @@ def aisle():
     for i in range(0,len(pie_aisle_df1)):
         dicto={}
         dicto["aisle"]=pie_aisle_df1.aisle.iloc[i]
-        dicto["Total_aisle"]=pie_aisle_df1.Total_aisle.iloc[i]
+        dicto["Total_aisle"]=int(pie_aisle_df1.Total_aisle.iloc[i])
         total.append(dicto)
 
     return jsonify(total)
@@ -201,7 +202,7 @@ def department():
     for i in range(0,len(pie_department_df1)):
         dicto={}
         dicto["department"]=pie_department_df1.department.iloc[i]
-        dicto["Total_department"]=pie_department_df1.Total_department.iloc[i]
+        dicto["Total_department"]=int(pie_department_df1.Total_department.iloc[i])
         total.append(dicto)
 
     session.close()
@@ -210,17 +211,14 @@ def department():
 @app.route("/graph/product")
 def product():
     session = Session(engine)
-    query = f"select product_tbl.product_name, count(orders_product_prior.order_id) from product_tbl\
-        inner join orders_product_prior on orders_product_prior.product_id=product_tbl.product_id\
-        group by product_tbl.product_name"
-    results = engine.execute(query).fetchall()
+    results = session.query(ProductL.product_name,ProductL.count).all()
     product = []
     order_count = []
     for result in results:
         product.append(result[0])
         order_count.append(result[1])
 
-    product_df= pd.DataFrame({"product_name":department,"Total_product":order_count})
+    product_df= pd.DataFrame({"product_name":product,"Total_product":order_count})
     product_df.sort_values(by=["Total_product"],inplace=True,ascending=False)
     product_df1 = product_df.iloc[0:10,:]
 
@@ -228,27 +226,22 @@ def product():
     for i in range(0,len(product_df1)):
         dicto={}
         dicto["product_name"]=product_df1.product_name.iloc[i]
-        dicto["Total_product"]=product_df1.Total_product.iloc[i]
+        dicto["Total_product"]=int(product_df1.Total_product.iloc[i])
         total.append(dicto)
-
-
     session.close()
     return jsonify(total)
 
-@app.route("/product_list")
-def product():
+@app.route("/product/product_list")
+def products_list():
     session = Session(engine)
-    query = f"select product_tbl.product_name, count(orders_product_prior.order_id) from product_tbl\
-        inner join orders_product_prior on orders_product_prior.product_id=product_tbl.product_id\
-        group by product_tbl.product_name"
-    results = engine.execute(query).fetchall()
+    results = session.query(ProductL.product_name,ProductL.count).all()
     product = []
     order_count = []
     for result in results:
         product.append(result[0])
         order_count.append(result[1])
 
-    product_df= pd.DataFrame({"product_name":department,"Total_product":order_count})
+    product_df= pd.DataFrame({"product_name":product,"Total_product":order_count})
     product_df.sort_values(by=["Total_product"],inplace=True,ascending=False)
     product_df1 = product_df.iloc[0:25,:]
 
@@ -257,8 +250,6 @@ def product():
         dicto={}
         dicto["product_name"]=product_df1.product_name.iloc[i]
         total.append(dicto)
-
-
     session.close()
     return jsonify(total)
 
