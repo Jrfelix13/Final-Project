@@ -34,7 +34,7 @@
     </nav>
     <!-- Creates the Overall Grid -->
     <!-- Creates Main stage -->
-    <div style="padding-top: 100 px;" class="container">
+    <div class="container">
         <h1 style="color: black; font-weight: bold; text-align: center; margin-top: 100 px;">Let's shop!
         </h1>
     </div>
@@ -42,29 +42,53 @@
     <!-- shopping Stage -->
     <br>
     <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="50" data-aos-duration="1000" class="container1">
-        <h5 style="color: black; font-weight: normal; text-align: center;">Choose your product
+        <h5 style="color: black; font-weight: normal; text-align: center;">Choose your products
         </h5>
         <br>
         <br>
         <div class="row">
             <!-- First of four columns -->
-            <div class="col-md-3">
-                <img style="margin-left: 120px;" src="#" width="50" height="50" alt="tomatoes">
+            <div class="col-md-4">
+                <div class="well">
+                    <h5>Product 1</h5>
+                    <select id="selDataset1"></select>
+                </div>
             </div>
             <!-- Second of four columns -->
-            <div class="col-md-3">
-                <img style="margin-left: 120px;" src="#" width="50" height="50" alt="tomatoes">
+            <div class="col-md-4">
+                <div class="well">
+                    <h5>Product 2</h5>
+                    <select id="selDataset2"></select>
+                </div>
             </div>
             <!-- Third of four columns -->
-            <div class="col-md-3">
-                <img style="margin-left: 120px;" src="#" width="50" height="50" alt="tomatoes">
+            <div class="col-md-4">
+                <div class="well">
+                    <h5>Product </h5>
+                    <select id="selDataset3"></select>
+                </div>
             </div>
-            <!-- Fourth of four columns -->
-            <div class="col-md-3">
-                <img style="margin-left: 120px;" src="#" width="50" height="50" alt="tomatoes">
+        </div>
+        <br>
+        <div style="align-self: center" class="container">
+            <div class="row">
+                <button type="button" class="btn btn-outline-success">Buy</button>
             </div>
         </div>
     </div>
+    <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="50" data-aos-duration="1000" class="container1">
+        <h5 style="color: black; font-weight: normal; text-align: center;">You might also like
+        </h5>
+        <h5 style="color: black; font-weight: normal; text-align: center;" id="#nextproduct">
+        </h5>
+    </div>
+    <div style="align-self: center" class="container">
+        <div class="row">
+            <button type="button" class="btn btn-outline-success" id="buy">Buy</button>
+        </div>
+    </div>
+    <br>
+    <br>
     <br>
     <br>
     <!-- Footer -->
