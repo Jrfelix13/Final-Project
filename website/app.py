@@ -235,6 +235,33 @@ def product():
     session.close()
     return jsonify(total)
 
+@app.route("/product_list")
+def product():
+    session = Session(engine)
+    query = f"select product_tbl.product_name, count(orders_product_prior.order_id) from product_tbl\
+        inner join orders_product_prior on orders_product_prior.product_id=product_tbl.product_id\
+        group by product_tbl.product_name"
+    results = engine.execute(query).fetchall()
+    product = []
+    order_count = []
+    for result in results:
+        product.append(result[0])
+        order_count.append(result[1])
+
+    product_df= pd.DataFrame({"product_name":department,"Total_product":order_count})
+    product_df.sort_values(by=["Total_product"],inplace=True,ascending=False)
+    product_df1 = product_df.iloc[0:25,:]
+
+    total = []
+    for i in range(0,len(product_df1)):
+        dicto={}
+        dicto["product_name"]=product_df1.product_name.iloc[i]
+        total.append(dicto)
+
+
+    session.close()
+    return jsonify(total)
+
 @app.route("/graph/heat_map")
 def heat():
     session = Session(engine)
