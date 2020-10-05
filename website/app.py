@@ -11,8 +11,10 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, inspect, func
 from sqlalchemy.orm import aliased
 
-#from pyspark.ml.fpm import FPGrowth
-
+import pyspark
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("FinalProject").getOrCreate()
+from pyspark.ml.fpm import FPGrowth
 #################################################
 # Database Setup
 #################################################
@@ -69,6 +71,79 @@ def shop():
 
     return render_template("shop.html")
 
+@app.route("/shop/<item1>/<item2>/<item3>")
+def neworder(item1,item2=None,item3=None):
+    
+    session = Session(engine)
+
+    order_items = []
+
+    item_1 = session.query(Product.product_id).filter(Product.product_name == item1).all()
+    order_items.append(item_1)
+    if item2 != None:
+        item_2 = session.query(Product.product_id).filter(Product.product_name == item2).all()
+        order_items.append(item_2)
+    if item3 != None:
+        item_2 = session.query(Product.product_id).filter(Product.product_name == item3).all()
+        order_items.append(item_3)
+    
+    order_item=[]
+    for i in range(0,len(order_items)):
+        order_item.append(order_items[i][0][0])
+    order_item = [("neworder",order_item)]
+    
+    order_items_df=pd.DataFrame(order_item,columns=['OrderId','ProductID'])
+    order_items = spark.createDataFrame(order_items_df)
+
+    results = session.query(OrdersT.order_id,OrdersT.order_id).all()
+    order_id = []
+    product_id = []
+    for result in results:
+        order_id.append(result[0])
+        product_id.append(result[1])
+        
+    orders_train_df= pd.DataFrame({"order_id":order_id,"product_id":product_id})
+
+    total = []
+    for i in orders_train_df['order_id'].unique():
+        data = (i, orders_train_df.loc[orders_train_df['order_id']== i]['product_id'].tolist())
+        total.append(data)
+
+    data_df = pd.DataFrame(total,columns=['OrderId','ProductID'])
+    total_data_df = spark.createDataFrame(data_df)
+
+    fpGrowth = FPGrowth(itemsCol="ProductID", minSupport=0.001, minConfidence=0.001)
+    model = fpGrowth.fit(total_data_df)
+
+    order_id = []
+    product_id = []
+    for result in results:
+        order_id.append(result[0])
+        product_id.append(result[1])
+    
+    orders_train_df= pd.DataFrame({"order_id":order_id,"product_id":product_id})
+    
+    data_df = model.transform(order_items).select("*").toPandas()
+
+    predictions = data_df["prediction"][0]
+
+    if len(predictions)>=1:
+        product_final = session.query(Product.product_name).filter(Product.product_id == predictions[0]).all()
+        aisle_final = session.query(Aisle.aisle).filter(Aisle.aisle_id == Product.aisle_id).filter(Product.product_id == predictions[0]).all()
+        department_final = session.query(Department.department).filter(Department.department_id == Product.department_id).filter(Product.product_id == predictions[0]).all()
+        result={}
+        result["product"]=str(product_final[0][0])
+        result["aisle"]=str(aisle_final[0][0])
+        result["department"]=str(department_final[0][0])
+    else:
+        result={}
+        result["product"]="There is not suggestion"
+        result["aisle"]="NA"
+        result["department"]="NA"
+    
+    session.close()
+    return jsonify(result)
+
 
 @app.route("/graph/aisle")
 def aisle():
@@ -91,7 +166,14 @@ def aisle():
     df_append = pd.DataFrame({"aisle":["Other"],"Total_aisle":[aisle_other]})
     pie_aisle_df1 = pie_aisle_df1.append(df_append,ignore_index=True)
     session.close()
-    return jsonify(pie_aisle_df1)
+    total = []
+    for i in range(0,len(pie_aisle_df1)):
+        dicto={}
+        dicto["aisle"]=pie_aisle_df1.aisle.iloc[i]
+        dicto["Total_aisle"]=pie_aisle_df1.Total_aisle.iloc[i]
+        total.append(dicto)
+
+    return jsonify(total)
 
 @app.route("/graph/department")
 def department():
@@ -113,8 +195,17 @@ def department():
     department_other= pie_department_df.Total_department.iloc[10:].sum()
     df_append = pd.DataFrame({"department":["Other"],"Total_department":[deparment_other]})
     pie_department_df1 = pie_department_df1.append(df_append,ignore_index=True)
+
+
+    total = []
+    for i in range(0,len(pie_department_df1)):
+        dicto={}
+        dicto["department"]=pie_department_df1.department.iloc[i]
+        dicto["Total_department"]=pie_department_df1.Total_department.iloc[i]
+        total.append(dicto)
+
     session.close()
-    return jsonify(pie_department_df1)
+    return jsonify(total)
 
 @app.route("/graph/product")
 def product():
@@ -132,8 +223,17 @@ def product():
     product_df= pd.DataFrame({"product_name":department,"Total_product":order_count})
     product_df.sort_values(by=["Total_product"],inplace=True,ascending=False)
     product_df1 = product_df.iloc[0:10,:]
+
+    total = []
+    for i in range(0,len(product_df1)):
+        dicto={}
+        dicto["product_name"]=product_df1.product_name.iloc[i]
+        dicto["Total_product"]=product_df1.Total_product.iloc[i]
+        total.append(dicto)
+
+
     session.close()
-    return jsonify(product_df1)
+    return jsonify(total)
 
 @app.route("/graph/heat_map")
 def heat():
@@ -141,24 +241,29 @@ def heat():
     query = f"select order_dow,order_hour_of_day,count(order_id) from orders_tbl\
         group by order_dow,order_hour_of_day"
     results = engine.execute(query).fetchall()
-    order_dow = []
-    order_hour = []
-    order_count = []
+    total =[]
     for result in results:
-        order_dow.append(result[0])
-        order_hour.append(result[1])
-        order_count.append(result[2])
+        dicto = {}
+        if result[0]==0:
+            day = "Monday"
+        elif result[0]==1:
+            day = "Tuesday"
+        elif result[0]==2:
+            day = "Wednesday"
+        elif result[0]==3:
+            day = "Thursday"
+        elif result[0]==4:
+            day = "Friday"
+        elif result[0]==5:
+            day = "Saturday"
+        elif result[0]==6:
+            day = "Sunday"
+        dicto["order_dow"]=day
+        dicto["order_hour"]=result[1]
+        dicto["order_count"]=result[2]
+        total.append(dicto)
 
-    heat_df= pd.DataFrame({"order_dow":order_dow,"order_hour_of_day":order_hour,"order_id":order_count})
-    heat_df.order_dow=heat_df.order_dow.replace(0,"Monday")
-    heat_df.order_dow=heat_df.order_dow.replace(1,"Tuesday")
-    heat_df.order_dow=heat_df.order_dow.replace(2,"Wednesday")
-    heat_df.order_dow=heat_df.order_dow.replace(3,"Thursday")
-    heat_df.order_dow=heat_df.order_dow.replace(4,"Friday")
-    heat_df.order_dow=heat_df.order_dow.replace(5,"Saturday")
-    heat_df.order_dow=heat_df.order_dow.replace(6,"Sunday")
-    session.close()
-    return jsonify(heat_df)
+    return jsonify(total)
 
 
 if __name__ == "__main__":
