@@ -1,3 +1,11 @@
+
+import sys
+sys.path.insert(0, '/var/www/html/flaskapp')
+sys.path.insert(1, '/usr/local/spark-2.0.2-bin-hadoop2.7/python')
+sys.path.insert(2, '/usr/local/spark-2.0.2-bin-hadoop2.7/python/lib/py4j-0.10.3-src.zip')
+from pyspark import SparkContext
+sc = SparkContext('local')
+
 from flask import Flask, render_template, redirect, jsonify, request
 
 import numpy as np
@@ -13,7 +21,7 @@ from sqlalchemy.orm import aliased
 
 import pyspark
 from pyspark.sql import SparkSession
-from pyspark.ml.fpm import FPGrowth
+from pyspark.ml.fpm import FPGrowthModel
 #################################################
 # Database Setup
 #################################################
@@ -96,34 +104,8 @@ def neworder(item1,item2=None,item3=None):
     order_items_df=pd.DataFrame(order_item,columns=['OrderId','ProductID'])
     order_items = spark.createDataFrame(order_items_df)
 
-    results = session.query(OrdersT.order_id,OrdersT.product_id).all()
-    order_id = []
-    product_id = []
-    for result in results:
-        order_id.append(result[0])
-        product_id.append(result[1])
-        
-    orders_train_df= pd.DataFrame({"order_id":order_id,"product_id":product_id})
+    model=FPGrowthModel.load("model/instacart_model3/")
 
-    total = []
-    for i in orders_train_df['order_id'].unique():
-        data = (i, orders_train_df.loc[orders_train_df['order_id']== i]['product_id'].tolist())
-        total.append(data)
-
-    data_df = pd.DataFrame(total,columns=['OrderId','ProductID'])
-    total_data_df = spark.createDataFrame(data_df)
-
-    fpGrowth = FPGrowth(itemsCol="ProductID", minSupport=0.001, minConfidence=0.001)
-    model = fpGrowth.fit(total_data_df)
-
-    order_id = []
-    product_id = []
-    for result in results:
-        order_id.append(result[0])
-        product_id.append(result[1])
-    
-    orders_train_df= pd.DataFrame({"order_id":order_id,"product_id":product_id})
-    
     data_df = model.transform(order_items).select("*").toPandas()
 
     predictions = data_df["prediction"][0]
@@ -285,4 +267,4 @@ def heat():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,port=8080)
