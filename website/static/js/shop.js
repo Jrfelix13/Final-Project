@@ -55,11 +55,14 @@ function updateProduct() {
 
     url2 = "http://127.0.0.1:5000/shop/" + item1 + "/" + item2 + "/" + item3;
 
-    d3.json(url2, function(error, result) {
+
+    d3.json(url2).then(function(result) {
 
         var infoPanel = d3.select("#nextproduct");
         infoPanel.html("")
-        infoPanel.append("h5").text(`${result.product}, <\br> Find it in Department: ${result.department} in Aisle: ${result.aisle}`)
+        infoPanel.insert("h2").style("text-align", "center").style("font-weight", "bold").text(`${result.product}`)
+        infoPanel.insert("h4").style("text-align", "center").text(`Find it in Department: ${result.department}`)
+        infoPanel.insert("h4").style("text-align", "center").text(`at Aisle: ${result.aisle}`)
     });
 };
 
