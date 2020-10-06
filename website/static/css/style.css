@@ -31,4 +31,6 @@ body {
     align-content: center;
     align-self: center;
     align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
