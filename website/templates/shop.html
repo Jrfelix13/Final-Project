@@ -35,17 +35,25 @@
     <!-- Creates the Overall Grid -->
     <!-- Creates Main stage -->
     <div class="container">
+        <div class="row"></div>
         <h1 style="color: black; font-weight: bold; text-align: center; margin-top: 100 px;">Let's shop!
         </h1>
     </div>
 
+    </div>
+
     <!-- shopping Stage -->
     <br>
-    <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="50" data-aos-duration="1000" class="container1">
-        <h5 style="color: black; font-weight: normal; text-align: center;">Choose your products
-        </h5>
-        <br>
-        <br>
+    <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="50" data-aos-duration="1000" class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h5 style="color: black; font-weight: normal; text-align: center;">Choose your products</h5>
+            </div>
+
+        </div>
+
+
         <div class="row">
             <!-- First of four columns -->
             <div class="col-md-4">
@@ -64,29 +72,40 @@
             <!-- Third of four columns -->
             <div class="col-md-4">
                 <div class="well">
-                    <h5>Product </h5>
+                    <h5>Product 3</h5>
                     <select id="selDataset3"></select>
                 </div>
             </div>
         </div>
-        <br>
-        <div style="align-self: center" class="container">
-            <div class="row">
-                <button type="button" class="btn btn-outline-success" id="buy">Buy</button>
+
+        <div class="row">
+            <div class="col text-center">
+                <button id="buy" type="button" class="btn btn-default btn-outline-success">Buy</button>
+            </div>
+        </div>
+
+    </div>
+    <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="50" data-aos-duration="1000" class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h5 style="color: black; font-weight: normal; text-align: center;">You might also like
+                </h5>
+            </div>
+        </div>
+        <div class="row">
+            <div id="nextproduct" style="align-self: center" class="col-md-12">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" class="btn btn-outline-success" id="addtocart">Add to Cart</button>
             </div>
         </div>
     </div>
-    <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="50" data-aos-duration="1000" class="container1">
-        <h5 style="color: black; font-weight: normal; text-align: center;">You might also like
-        </h5>
-        <h5 style="color: black; font-weight: normal; text-align: center;" id="#nextproduct">
-        </h5>
+
+
     </div>
-    <div style="align-self: center" class="container">
-        <div class="row">
-            <button type="button" class="btn btn-outline-success" id="addtocart">Add to Cart</button>
-        </div>
-    </div>
+
     <br>
     <br>
     <br>
